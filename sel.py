@@ -239,3 +239,88 @@ class TokpedScrap:
         """
         with open(f"data/{filename}", "w") as file:
             json.dump(self.data_list, file, indent=2)
+
+    def approximate(self, filename: str) -> None:
+        """
+        Method untuk melakukan aproksimasi data harga
+
+        Author
+        ----------
+        Thafa - 231524027 - @AllThaf
+
+        Parameters
+        ----------
+        filename : str
+            Nama file dataset yang akan diaproksimasi
+        """
+        with open(f"data/{filename}", "r") as file:
+            data = json.load(file)
+
+        appr_per_merek = {}
+
+        for produk in data:
+            merek = produk["merek"]
+            harga = int(produk["harga"])
+            terjual = self.parse_terjual(produk["terjual"])
+
+            if merek in appr_per_merek:
+                appr_per_merek[merek]["jumlah_produk"] += 1
+                appr_per_merek[merek]["terjual"] += terjual
+                appr_per_merek[merek]["total_harga"] += harga
+
+                if harga < appr_per_merek[merek]["harga_terendah"]:
+                    appr_per_merek[merek]["harga_terendah"] = harga
+                if harga > appr_per_merek[merek]["harga_tertinggi"]:
+                    appr_per_merek[merek]["harga_tertinggi"] = harga
+            else:
+                appr_per_merek[merek] = {
+                    "jumlah_produk": 1,
+                    "total_harga": harga,
+                    "terjual": terjual,
+                    "harga_terendah": harga,
+                    "harga_tertinggi": harga,
+                }
+
+        hasil = []
+
+        for merek, info in appr_per_merek.items():
+            info["harga_rata_rata"] = info["total_harga"] / info["jumlah_produk"]
+            hasil.append(
+                {
+                    "merek": merek,
+                    "jumlah_produk": info["jumlah_produk"],
+                    "terjual": info["terjual"],
+                    "harga_tertinggi": info["harga_tertinggi"],
+                    "harga_terendah": info["harga_terendah"],
+                    "harga_rata_rata": round(info["harga_rata_rata"], 2),
+                }
+            )
+
+        filename_parser = filename.split(".")
+        with open(f"data/{filename_parser[0]}_appr.json", "w") as file:
+            json.dump(hasil, file, indent=2)
+
+    def parse_terjual(self, terjual_str: str) -> int:
+        """
+        Method untuk mengubah string terjual menjadi integer
+
+        Author
+        ----------
+        Thafa - 231524027 - @AllThaf
+
+        Parameters
+        ----------
+        terjual_str : str
+            String yang akan diubah menjadi integer
+        """
+        terjual_str = terjual_str.replace(" terjual", "").replace(" terjual", "")
+        if "rb" in terjual_str:
+            return int(
+                float(terjual_str.replace("rb", "").replace("+", "").strip()) * 1000
+            )
+        elif "+" in terjual_str:
+            return int(terjual_str.replace("+", "").strip())
+        elif terjual_str == "N/A":
+            return 0
+        else:
+            return int(terjual_str.strip())
