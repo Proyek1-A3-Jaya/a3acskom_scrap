@@ -1,4 +1,4 @@
-def merek_keyboard():
+def merek_keyboard() -> list[str]:
     return [
         "Logitech",
         "Corsair",
@@ -76,10 +76,11 @@ def merek_keyboard():
         "Mad Catz",
         "MSI",
         "Fnatic",
+        "",
     ]
 
 
-def merek_mouse():
+def merek_mouse() -> list[str]:
     return [
         "Logitech",
         "Razer",
@@ -148,10 +149,11 @@ def merek_mouse():
         "G.Skill",
         "Patriot Viper",
         "Sabrent",
+        "",
     ]
 
 
-def merek_headphone():
+def merek_headphone() -> list[str]:
     return [
         "Sony",
         "Logitech",
@@ -231,10 +233,11 @@ def merek_headphone():
         "Focal",
         "Meze",
         "Hifiman",
+        "",
     ]
 
 
-def merek_tas_laptop():
+def merek_tas_laptop() -> list[str]:
     return [
         "Lenovo",
         "Ryota",
@@ -300,5 +303,126 @@ def merek_tas_laptop():
         "Rivacase",
         "Urban Factor",
         "Vention",
+        "",
+    ]
+
+
+def merek_monitor() -> list[str]:
+    return [
+        "KOORUI",
+        "Lenovo",
+        "Samsung",
+        "Touchindo",
+        "Xiaomi",
+        "SPC",
+        "MSI",
+        "BenQ",
+        "LG",
+        "Kerndy",
+        "AOC",
+        "Acer",
+        "CUBE",
+        "ViewSonic",
+        "ASRock",
+        "Dell",
+        "Digital Alliance",
+        "ASUS",
+        "HP",
+        "Enlight",
+        "Aevision",
+        "Armaggeddon",
+        "Tecware",
+        "Titan",
+        "KKMOON",
+        "Redmi",
+        "Philips",
+        "Fujitsu",
+        "GOOJODOQ",
+        "BEEX",
+        "Dahua",
+        "Gigabyte",
+        "Magix",
+        "Cooler Master",
+        "Glenz",
+        "",
+    ]
+
+
+def merek_speaker() -> list[str]:
+    return [
+        "Robot",
+        "Kisonli",
+        "JETE",
+        "Edifier",
+        "Fleco",
+        "K-One",
+        "Gamen",
+        "Advance",
+        "Ashley",
+        "Gamen",
+        "JBL",
+        "Lenovo",
+        "Bonks",
+        "Altec",
+        "Simbadda",
+        "M-Tech",
+        "Logitech",
+        "Ezeey",
+        "SADA",
+        "Touchindo",
+        "GMC",
+        "Multimedia",
+        "",
+    ]
+
+
+def merek_webcam() -> list[str]:
+    return [
+        "Eyesec",
+        "Logitech",
+        "Inforce",
+        "Xiaovv",
+        "Camtech",
+        "M-Tech",
+        "NYK",
+        "Streamplify",
+        "MOVIO",
+        "Razer",
+        "Anker",
+        "Mibo",
+        "ASUS",
+        "SPC",
+        "Noir",
+        "Tecgear",
+        "Philips",
+        "MIXIO",
+        "Lumi",
+        "JETE",
+        "Micropack",
+        "Raptor",
+        "Lenovo",
+        "HikVision",
+        "OBSBOT",
+        "Ausdom",
+        "Cisco",
+        "Jabra",
+        "Insta360",
+        "Tenveo",
+        "Televideo",
+        "Brica",
+        "KRX",
+        "CLIPtec",
+        "Rexus",
+        "Digital Allience",
+        "Komic",
+        "Supermall",
+        "iPason",
+        "Hovercam",
+        "AVerMedia",
+        "Elgato",
+        "Inbox",
+        "Ashu",
+        "Papalook",
+        "Mycam",
         "",
     ]
