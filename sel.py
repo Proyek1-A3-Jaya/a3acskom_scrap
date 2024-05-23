@@ -18,7 +18,7 @@ class TokpedScrap:
     Thafa - 231524027 - @AllThaf
     """
 
-    def __init__(self, link: str, merek_item: list):
+    def __init__(self, link: str, merek_item: list, filename: str):
         """
         Constructor dari class TokpedScrap
 
@@ -33,6 +33,7 @@ class TokpedScrap:
         """
         self.link = link
         self.merek_item = merek_item
+        self.filename = filename
         self.data_list = []
 
     def driver_setup(self) -> webdriver:
@@ -93,11 +94,14 @@ class TokpedScrap:
 
         """
         for i in range(len(self.merek_item) - 1):
-            if (
-                self.merek_item[i] in nama_item.title()
-                or self.merek_item[i] in nama_item
-                or self.merek_item[i].title() in nama_item
-            ):
+            # if (
+            #     self.merek_item[i] in nama_item.title()
+            #     or self.merek_item[i] in nama_item
+            #     or self.merek_item[i].title() in nama_item
+            #     or self.merek_item[i].lower() in nama_item.lower()
+            #     or self.merek_item[i].upper() in nama_item
+            # ):
+            if self.merek_item[i].lower() in nama_item.lower():
                 return self.merek_item[i]
         return "Lainnya"
 
@@ -222,9 +226,10 @@ class TokpedScrap:
                 else:
                     break
         finally:
+            self.save_data()
             driver.quit()
 
-    def save_data(self, filename: str) -> None:
+    def save_data(self) -> None:
         """
         Method untuk menyimpan data hasil web scraping ke sebuah file json
 
@@ -237,10 +242,11 @@ class TokpedScrap:
         filename : str
             Nama file yang akan digunakan untuk menyimpan data
         """
-        with open(f"data/{filename}", "w") as file:
+        with open(f"data/{self.filename}", "w") as file:
             json.dump(self.data_list, file, indent=2)
+        self.approximate()
 
-    def approximate(self, filename: str) -> None:
+    def approximate(self) -> None:
         """
         Method untuk melakukan aproksimasi data harga
 
@@ -253,7 +259,7 @@ class TokpedScrap:
         filename : str
             Nama file dataset yang akan diaproksimasi
         """
-        with open(f"data/{filename}", "r") as file:
+        with open(f"data/{self.filename}", "r") as file:
             data = json.load(file)
 
         appr_per_merek = {}
@@ -296,7 +302,7 @@ class TokpedScrap:
                 }
             )
 
-        filename_parser = filename.split(".")
+        filename_parser = self.filename.split(".")
         with open(f"data/{filename_parser[0]}_appr.json", "w") as file:
             json.dump(hasil, file, indent=2)
 
