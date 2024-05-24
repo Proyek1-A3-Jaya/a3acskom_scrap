@@ -30,6 +30,10 @@ class TokpedScrap:
         ----------
         link : str
             Link dari halaman web yang akan di-scrap
+        merek_item : list
+            List yang berisi merek dari item yang akan di-scrap
+        filename : str
+            Nama file yang akan digunakan untuk menyimpan data hasil scrap
         """
         self.link = link
         self.merek_item = merek_item
@@ -85,8 +89,8 @@ class TokpedScrap:
 
         Parameters
         ----------
-        data : BeautifulSoup
-            Instance dari BeautifulSoup yang berisi halaman web
+        nama_item : str
+            Nama item yang akan diekstrak mereknya
 
         Returns
         ----------
@@ -94,13 +98,6 @@ class TokpedScrap:
 
         """
         for i in range(len(self.merek_item) - 1):
-            # if (
-            #     self.merek_item[i] in nama_item.title()
-            #     or self.merek_item[i] in nama_item
-            #     or self.merek_item[i].title() in nama_item
-            #     or self.merek_item[i].lower() in nama_item.lower()
-            #     or self.merek_item[i].upper() in nama_item
-            # ):
             if self.merek_item[i].lower() in nama_item.lower():
                 return self.merek_item[i]
         return "Lainnya"
@@ -207,7 +204,7 @@ class TokpedScrap:
         driver.get(self.link)
 
         try:
-            for i in range(2):  # Change this range to scrap more pages
+            for i in range(30):  # Change this range to scrap more pages
                 WebDriverWait(driver, 10).until(
                     EC.presence_of_element_located((By.CLASS_NAME, "css-llwpbs"))
                 )
@@ -236,11 +233,6 @@ class TokpedScrap:
         Author
         ----------
         Thafa - 231524027 - @AllThaf
-
-        Parameters
-        ----------
-        filename : str
-            Nama file yang akan digunakan untuk menyimpan data
         """
         with open(f"data/{self.filename}", "w") as file:
             json.dump(self.data_list, file, indent=2)
@@ -253,11 +245,6 @@ class TokpedScrap:
         Author
         ----------
         Thafa - 231524027 - @AllThaf
-
-        Parameters
-        ----------
-        filename : str
-            Nama file dataset yang akan diaproksimasi
         """
         with open(f"data/{self.filename}", "r") as file:
             data = json.load(file)
