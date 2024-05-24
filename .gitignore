@@ -1,6 +1,9 @@
 # Ignore json files
 data/*.json
 
+# Ignore .vscode
+.vscode/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
