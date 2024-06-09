@@ -238,28 +238,37 @@ class TokpedScrap:
             json.dump(self.data_list, file, indent=2)
         self.approximate()
 
-    def approximate(self) -> None:
+    def approximate(self) -> int:
         """
         Method untuk melakukan aproksimasi data harga
 
         Author
         ----------
         Thafa - 231524027 - @AllThaf
+
+        Return
+        ----------
+        total_terjual : int
+            Jumlah kategori yang terjual
         """
         with open(f"data/{self.filename}", "r") as file:
             data = json.load(file)
 
         appr_per_merek = {}
+        total_terjual = 0
 
         for produk in data:
             merek = produk["merek"]
             harga = int(produk["harga"])
+            rating = float(produk["rating"]) if produk["rating"] != "N/A" else 0
             terjual = self.parse_terjual(produk["terjual"])
 
             if merek in appr_per_merek:
                 appr_per_merek[merek]["jumlah_produk"] += 1
                 appr_per_merek[merek]["terjual"] += terjual
                 appr_per_merek[merek]["total_harga"] += harga
+                appr_per_merek[merek]["rerata_rating"] += rating
+                total_terjual += appr_per_merek[merek]["terjual"]
 
                 if harga < appr_per_merek[merek]["harga_terendah"]:
                     appr_per_merek[merek]["harga_terendah"] = harga
@@ -272,6 +281,7 @@ class TokpedScrap:
                     "terjual": terjual,
                     "harga_terendah": harga,
                     "harga_tertinggi": harga,
+                    "rerata_rating": rating,
                 }
 
         hasil = []
@@ -286,12 +296,17 @@ class TokpedScrap:
                     "harga_tertinggi": info["harga_tertinggi"],
                     "harga_terendah": info["harga_terendah"],
                     "harga_rata_rata": round(info["harga_rata_rata"], 2),
+                    "rerata_rating": round(
+                        info["rerata_rating"] / info["jumlah_produk"], 1
+                    ),
                 }
             )
 
         filename_parser = self.filename.split(".")
         with open(f"data/{filename_parser[0]}_appr.json", "w") as file:
             json.dump(hasil, file, indent=2)
+
+        return total_terjual
 
     def parse_terjual(self, terjual_str: str) -> int:
         """
